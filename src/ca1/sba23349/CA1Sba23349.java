@@ -17,15 +17,23 @@ public class CA1Sba23349 {
 
     public static void main(String[] args) {
 
+        String inputFile = "student.txt";
+        String outputFile = "status.txt";
+        
+        String[] dataFile = new String[3];
+
         try {
-            // Reading the data from the file.
-            Scanner sc = new Scanner(new FileReader("test/student.txt"));
+            Scanner sc = new Scanner(new FileReader(inputFile));
             
-            
+            int index = 0;
             while (sc.hasNextLine()) {
-                String fileData = sc.nextLine();
-                System.out.println(fileData);
+                dataFile[index] = sc.nextLine();
+                index++;
             }
+           
+            System.out.println(dataFile[0]);
+            System.out.println(dataFile[1]);
+            System.out.println(dataFile[2]);
 
         } catch (Exception e) {
             System.out.println(e);
