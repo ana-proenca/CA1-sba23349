@@ -20,24 +20,30 @@ public class CA1Sba23349 {
         String inputFile = "student.txt"; // name of the file to read
         String outputFile = "status.txt"; // name of the file to write
 
+
+        // Reading 
         // creating a variable from reading method
         String[] dataFile = readingMethod(inputFile);
 
+
+        //Verifying Student Name
         // variable for the first line of the file
         String fullName = dataFile[0];
         boolean isStudentNameValid = studentNameValidation(fullName); // variable to verify student name
 
+
+        //Number of Classes
         int numberClasses = Integer.parseInt(dataFile[1]); // variable to use to verify type of workload, needed to
         // parse to int.
-
         boolean isNumberClassesValid = workloadValidation(numberClasses); // variable to verify number of classes
 
         // validation if Student Name and Number of Classes from file are valid
-        if (isStudentNameValid && isNumberClassesValid) {
-            System.out.println("Student Name and Number of Classes are valid");
-        } else {
-            System.out.println("Student Name and Number of Classes are  NOT valid");
-        }
+        // if (isStudentNameValid && isNumberClassesValid) {
+        //     System.out.println("Student Name and Number of Classes are valid");
+        // } else {
+        //     System.out.println("Student Name and Number of Classes are  NOT valid");
+        // }
+
 
         // variable to get method Workload
         String resultWorkload = workload(numberClasses);
@@ -58,27 +64,24 @@ public class CA1Sba23349 {
             System.out.println(e);
         }
 
-
-
-
         // String to verify student number
         String studentNumber = dataFile[2];
 
-        // validating Student number
-        if (studentNumber.length() < 6) {
-            System.out.println("Student number must be a minimum of 6 characters.");
-        }
+        // validating minimun lenght of Student number and printing error message
+        boolean isLenghtStudentNumber = studentNumberValidation(studentNumber);
 
+        //getting string to verify if two first characters are numbers.
         String firstTwoStudentNumber = studentNumber.substring(0, 1);
-        if (!firstTwoStudentNumber.matches("[0-9]+")) {
-            System.out.println("First two characters of Student Number must be numbers.");
-        }
-
-
-
+        boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber);
+       
 
         String letterOrNumberStudentNumber = studentNumber.substring(4); // getting position 4 for validation
         int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
+
+        // variable to check if character 2 and 3 are letters
+        String firstTwoLettersStudentNumber = studentNumber.substring(2,3);
+        boolean isLettersStudentNumber = firstTwoLettersValidation(firstTwoLettersStudentNumber);
+
 
         // verify if position 4 of studentNumber String is number
         if (letterOrNumberStudentNumber.matches("[0-9]+")) {
@@ -103,7 +106,7 @@ public class CA1Sba23349 {
         }
     }
 
-    // reading method
+    // Reading Method
     public static String[] readingMethod(String inputFile) {
         String[] dataFile = new String[3];
         try {
@@ -120,7 +123,7 @@ public class CA1Sba23349 {
         return dataFile;
     }
 
-    // Validation for student Name
+    // Student Name Method
     public static boolean studentNameValidation(String fullName) {
         // verification if string contains a single space between name and surname
         if (!fullName.contains(" ")) {
@@ -145,7 +148,8 @@ public class CA1Sba23349 {
         return true;
     }
 
-    // Getting Workload
+
+    // Number of Classes Method
     public static String workload(int numberClasses) {
         if (numberClasses == 1) {
             return "Very Light";
@@ -159,16 +163,69 @@ public class CA1Sba23349 {
             return "Full Time";
         }
     }
-
     // Workload validation method checking if number of classes is between 1 and 8
     public static boolean workloadValidation(int numberClasses) {
         return numberClasses > 0 && numberClasses <= 8;
     }
 
-    // public static void studentNumberChecker(String studentNumber) {
-    //
-    // }
-    // public static String writingMethod() {
-    // if
-    // }
-}
+
+    // Student Number Method
+    // validating if number of characters in Student Number
+    public static boolean studentNumberValidation(String studentNumber) {
+        if (studentNumber.length() >= 6) {
+            return true;
+        } else {
+            System.out.println("Student number must be a minimum of 6 characters.");
+            return false;
+        }
+    }
+    // validating if first two characters in Student Number are numbers
+    public static boolean firstTwoNumberValidation(String firstTwoStudentNumber) {
+        if (firstTwoStudentNumber.matches("[0-9]+")){
+            return true;
+        } else {
+            System.out.println("First two characters of Student Number must be numbers.");
+            return false;
+        }
+    }
+
+    public static boolean studentNumberRemainingValidation(String letterOrNumberStudentNumber, String studentNumber, int endIndex) {
+        // verify if position 4 of studentNumber String is number
+        if (letterOrNumberStudentNumber.matches("[0-9]+")) {
+            System.out.println("Position 4 is a number");
+            // getting a String of numbers from position 4 until total lenght.
+            String isPosition4Number = studentNumber.substring(4, endIndex);
+            // verify if last characters are numbers
+            if (!isPosition4Number.matches("[0-9]+")) {
+                System.out.println(studentNumber.substring(4, endIndex));
+                System.out.println("Last characters are not numbers and position 4 is a number");
+                return false;
+            } else {
+                return true;
+            }
+        
+        } else {
+            System.out.println("Position 4 is a letter");
+            // getting a String of numbers from position 5 until total lenght as position 4 is a letter
+            String isPosition4Letter = studentNumber.substring(5, endIndex);
+            // verify if last characters are numbers
+            if (!isPosition4Letter.matches("[0-9]+")) {
+                System.out.println(studentNumber.substring(5, endIndex));
+                System.out.println("Last characters are not numbers and position 4 is a letter");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    public static boolean firstTwoLettersValidation(String firstTwoLettersStudentNumber) {
+        if (firstTwoLettersStudentNumber.matches("[0-9]+")) {
+            System.out.println("Information afer student year needs to be letters.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    }
