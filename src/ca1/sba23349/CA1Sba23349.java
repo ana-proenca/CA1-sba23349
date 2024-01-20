@@ -17,7 +17,6 @@ public class CA1Sba23349 {
 
     public static void main(String[] args) {
         String inputFile = "student.txt"; // name of the file to read
-        String outputFile = "status.txt"; // name of the file to write
 
         // READING FROM A FILE
         // creating a variable from reading method
@@ -32,8 +31,6 @@ public class CA1Sba23349 {
         int numberClasses = Integer.parseInt(dataFile[1]); // variable to use to verify type of workload, needed to
         // parse to int.
         boolean isNumberClassesValid = workloadValidation(numberClasses); // variable to verify number of classes
-        // variable to get method Workload
-        String resultWorkload = workload(numberClasses);
 
         // STUDENT NUMBER
         // String to verify student number
@@ -51,24 +48,15 @@ public class CA1Sba23349 {
         boolean isLettersStudentNumber = firstTwoLettersValidation(firstTwoLettersStudentNumber);
 
         // getting position 4 for validation
-        String letterOrNumberStudentNumber = studentNumber.substring(4); 
+        String letterOrNumberStudentNumber = studentNumber.substring(4);
         int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
         // variable to check if character 2 and 3 are letters
-        boolean isStudentNumberValid = studentNumberValidation(letterOrNumberStudentNumber,studentNumber,endIndex);
+        boolean isStudentNumberValid = studentNumberValidation(letterOrNumberStudentNumber, studentNumber, endIndex);
 
         // WRITING IN A FILE
-        if (isStudentNameValid && isNumberClassesValid && isLenghtStudentNumber && isFirstTwoNumber && isLettersStudentNumber && isStudentNumberValid) {
-            // geting second name from a fullName's substring and adding 1 to skip single space
-            String secondName = fullName.substring(fullName.indexOf(" ") + 1); 
-            try {
-                BufferedWriter br = new BufferedWriter(new FileWriter(outputFile));
-                br.write(studentNumber + "-" + secondName);
-                br.newLine();
-                br.write(resultWorkload);
-                br.close();
-            } catch (IOException e) {
-                System.out.println(e);
-            }
+        if (isStudentNameValid && isNumberClassesValid && isLenghtStudentNumber && isFirstTwoNumber
+                && isLettersStudentNumber && isStudentNumberValid) {
+            writingFile(fullName, studentNumber, numberClasses);
         }
     }
 
@@ -169,7 +157,8 @@ public class CA1Sba23349 {
             }
 
         } else {
-            // getting a String of numbers from position 5 until total lenght as position 4 is a letter
+            // getting a String of numbers from position 5 until total lenght as position 4
+            // is a letter
             String isPosition4Letter = studentNumber.substring(5, endIndex);
             // verify if last characters are numbers
             if (!isPosition4Letter.matches("[0-9]+")) {
@@ -181,6 +170,7 @@ public class CA1Sba23349 {
             }
         }
     }
+
     // verify if after student year are letters
     public static boolean firstTwoLettersValidation(String firstTwoLettersStudentNumber) {
         if (firstTwoLettersStudentNumber.matches("[0-9]+")) {
@@ -190,5 +180,24 @@ public class CA1Sba23349 {
             return true;
         }
     }
-    
+
+    //
+    public static void writingFile(String fullName, String studentNumber, int numberClasses) {
+        String outputFile = "status.txt"; // name of the file to write
+        // geting second name from a fullName's substring and adding 1 to skip single
+        // space
+        String secondName = fullName.substring(fullName.indexOf(" ") + 1);
+        // variable to get method Workload
+        String resultWorkload = workload(numberClasses);
+        try {
+            BufferedWriter br = new BufferedWriter(new FileWriter(outputFile));
+            br.write(studentNumber + "-" + secondName);
+            br.newLine();
+            br.write(resultWorkload);
+            br.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+    }
 }
