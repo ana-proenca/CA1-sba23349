@@ -203,24 +203,35 @@ public class CA1Sba23349 {
             // as position 4 is a number - String of numbers from position 4 until total lenght.
             String studentNumberNumbers = studentNumber.substring(4, endIndex);
             // verify if last characters are numbers
-            if (!studentNumberNumbers.matches("[0-9]+")) {
-                System.out.println(studentNumber.substring(4, endIndex));
-                System.out.println("Last characters are not numbers and position 4 is a number");
-                return false;
+            if (studentNumberNumbers.matches("[0-9]+")) {
+                int studentNumberInt = Integer.parseInt(studentNumberNumbers);
+                
+                if (studentNumberInt >= 1 && studentNumberInt <= 200) {
+                    return true;
+                } else {
+                    System.out.println("Number after the letters need to be between 1 and 200");
+                    return false;
+                }
             } else {
-                return true;
+                System.out.println(studentNumber.substring(4, endIndex));
+                return false;
             }
 
         } else {
             // as position 4 is a letter - String of numbers from position 5 until total lenght as position 4 is a letter
             String studentNumberNumbers = studentNumber.substring(5, endIndex);
             // verify if last characters are numbers
-            if (!studentNumberNumbers.matches("[0-9]+")) {
-                System.out.println(studentNumber.substring(5, endIndex));
-                System.out.println("Last characters are not numbers and position 4 is a letter");
-                return false;
+            if (studentNumberNumbers.matches("[0-9]+")) {
+                int studentNumberInt = Integer.parseInt(studentNumberNumbers);
+                
+                if (studentNumberInt >= 1 && studentNumberInt <= 200) {
+                    return true;
+                } else {
+                    System.out.println("Number after the letters need to be between 1 and 200");
+                    return false;
+                }
             } else {
-                return true;
+                return false;
             }
         }
     }
@@ -245,11 +256,11 @@ public class CA1Sba23349 {
         String resultWorkload = workload(numberClasses);
         try {
             BufferedWriter br = new BufferedWriter(new FileWriter(outputFile));
-            br.write(studentNumber + "-" + secondName);
+            br.write(studentNumber.toUpperCase() + "-" + secondName);
             br.newLine();
             br.write(resultWorkload);
-            br.close();
             System.out.println("Data is written in status.txt");
+            br.close();
         } catch (IOException e) {
             System.out.println(e);
         }
