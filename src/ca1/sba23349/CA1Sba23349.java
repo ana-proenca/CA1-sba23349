@@ -19,30 +19,25 @@ public class CA1Sba23349 {
         // READING FROM A FILE
         // creating a variable from reading method
         String inputFile = "student.txt"; // name of the file to read
-        String[] dataFile = readingMethod(inputFile);
+        String[] dataFile = new String[0];
 
-        //MENU
-        // System.out.println("Please enter an option: ");
-        // System.out.println("1 - Read from the file, or");
-        // System.out.println("2 - Read from the console.");
-        // try (Scanner sc1 = new Scanner(System.in)) {
-        //     String userOption = sc1.nextLine();
-        //     if ((userOption.contains("1"))) {
-        //         readingMethod(inputFile);
-        //     } else if (!userOption.contains("1") || !userOption.contains("2")) {
-        //         System.out.println("Please enter a valid option: 1 or 2");
-        //     } else {
-        //         System.out.println("Please, enter student name: ");
-        //         String studentNameConsole = sc1.nextLine();
-        //         System.out.println("Enter the number of classes between 1 and 8:");
-        //         int numberClassesConsole = Integer.parseInt(sc1.nextLine());
-        //         System.out.println("");
-        //         System.out.println("Enter the student number: ");
-        //         String studentNumberConsole = sc1.nextLine();
-        //     }
-        // } catch (Exception e) {
-        //     System.out.println(e);
-        // }
+        // MENU
+        System.out.println("Please enter an option: ");
+        System.out.println("1 - Read from the file, or");
+        System.out.println("2 - Read from the console.");
+        try ( Scanner sc1 = new Scanner(System.in)) {
+            String userOption = sc1.nextLine();
+            if ((userOption.contains("1"))) {
+                dataFile = readFromFile(inputFile);
+            } else if (!userOption.contains("1") && !userOption.contains("2")) {
+                System.out.println("Please enter a valid option: 1 or 2");
+            } else {
+                dataFile = readFromInput(sc1);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         // STUDENT NAME
         // variable for the first line of the file
         String fullName = dataFile[0];
@@ -63,7 +58,6 @@ public class CA1Sba23349 {
         int yearValidation = Integer.parseInt(firstTwoStudentNumber);
         boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber, yearValidation);
         // to check the year is at least 2020
-        
 
         // verify if position 2 and 3 are letters
         String firstTwoLettersStudentNumber = studentNumber.substring(2, 4);
@@ -72,10 +66,9 @@ public class CA1Sba23349 {
         String letterOrNumberStudentNumber = studentNumber.substring(4);
         int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
         // variable to check if character 2 and 3 are letters
-        
+
         // int stuNumberNumbersInt = Integer.parseInt(studentNumberNumbers);
         boolean isStudentNumberValid = studentNumberValidation(letterOrNumberStudentNumber, studentNumber, endIndex);
-        
 
         // // WRITING IN A FILE
         if (isStudentNameValid && isNumberClassesValid && isLenghtStudentNumber && isFirstTwoNumber
@@ -90,10 +83,10 @@ public class CA1Sba23349 {
 
         try {
             Scanner sc = new Scanner(new FileReader(inputFile));
-           
+
             while (sc.hasNextLine()) {
                 sc.nextLine();
-                totalLine ++;
+                totalLine++;
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -101,14 +94,14 @@ public class CA1Sba23349 {
 
         return totalLine;
     }
-    
-     public static String[] readingMethod(String inputFile) {
-         int totalLine = getTotalLine(inputFile);
+
+    public static String[] readFromFile(String inputFile) {
+        int totalLine = getTotalLine(inputFile);
         String[] dataFile = new String[totalLine];
 
         try {
             Scanner sc = new Scanner(new FileReader(inputFile));
-       
+
             int index = 0;
             while (sc.hasNextLine()) {
                 dataFile[index] = sc.nextLine();
@@ -119,7 +112,21 @@ public class CA1Sba23349 {
         }
         return dataFile;
     }
-    
+
+    public static String[] readFromInput(Scanner sc1) {
+        String[] dataInput = new String[3];
+        System.out.println("Please, enter student name: ");
+        dataInput[0] = sc1.nextLine();
+
+        System.out.println("Enter the number of classes between 1 and 8:");
+        dataInput[1] = sc1.nextLine();
+
+        System.out.println("Enter the student number: ");
+        dataInput[2] = sc1.nextLine();
+
+        return dataInput;
+    }
+
     // Student Name Method
     public static boolean studentNameValidation(String fullName) {
         // verification if string contains a single space between name and surname
@@ -151,6 +158,7 @@ public class CA1Sba23349 {
             return "Full Time";
         }
     }
+
     // Workload validation method checking if number of classes is between 1 and 8
     public static boolean workloadValidation(int numberClasses) {
         if (numberClasses > 0 && numberClasses <= 8) {
@@ -171,10 +179,11 @@ public class CA1Sba23349 {
             return false;
         }
     }
+
     // validating if first two characters in Student Number are numbers
     public static boolean firstTwoNumberValidation(String firstTwoStudentNumber, int yearValidation) {
         if (firstTwoStudentNumber.matches("[0-9]+")) {
-            if (yearValidation>=20) {
+            if (yearValidation >= 20) {
                 return true;
             } else {
                 System.out.println("Year from student number need to be at least 2020.");
@@ -185,6 +194,7 @@ public class CA1Sba23349 {
             return false;
         }
     }
+
     // verify if position 4 is letter or number
     public static boolean studentNumberValidation(String letterOrNumberStudentNumber, String studentNumber,
             int endIndex) {
@@ -200,7 +210,7 @@ public class CA1Sba23349 {
             } else {
                 return true;
             }
-                
+
         } else {
             // as position 4 is a letter - String of numbers from position 5 until total lenght as position 4 is a letter
             String studentNumberNumbers = studentNumber.substring(5, endIndex);
@@ -214,6 +224,7 @@ public class CA1Sba23349 {
             }
         }
     }
+
     // verify if after student year are letters
     public static boolean firstTwoLettersValidation(String firstTwoLettersStudentNumber) {
         if (firstTwoLettersStudentNumber.matches("[0-9]+")) {
@@ -238,6 +249,7 @@ public class CA1Sba23349 {
             br.newLine();
             br.write(resultWorkload);
             br.close();
+            System.out.println("Data is written in status.txt");
         } catch (IOException e) {
             System.out.println(e);
         }
