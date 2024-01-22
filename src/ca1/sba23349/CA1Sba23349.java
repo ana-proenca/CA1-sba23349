@@ -16,12 +16,33 @@ import java.util.Scanner;
 public class CA1Sba23349 {
 
     public static void main(String[] args) {
-        String inputFile = "student.txt"; // name of the file to read
-
         // READING FROM A FILE
         // creating a variable from reading method
+        String inputFile = "student.txt"; // name of the file to read
         String[] dataFile = readingMethod(inputFile);
 
+        //MENU
+        System.out.println("Please enter an option: ");
+        System.out.println("1 - Read from the file, or");
+        System.out.println("2 - Read from the console.");
+        try (Scanner sc1 = new Scanner(System.in)) {
+            String userOption = sc1.nextLine();
+            if ((userOption.contains("1"))) {
+                readingMethod(inputFile);
+            } else if (!userOption.contains("1") || !userOption.contains("2")) {
+                System.out.println("Please enter a valid option: 1 or 2");
+            } else {
+                System.out.println("Please, enter student name: ");
+                String studentNameConsole = sc1.nextLine();
+                System.out.println("Enter the number of classes between 1 and 8:");
+                int numberClassesConsole = Integer.parseInt(sc1.nextLine());
+                System.out.println("");
+                System.out.println("Enter the student number: ");
+                String studentNumberConsole = sc1.nextLine();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         // STUDENT NAME
         // variable for the first line of the file
         String fullName = dataFile[0];
@@ -35,18 +56,14 @@ public class CA1Sba23349 {
         // STUDENT NUMBER
         // String to verify student number
         String studentNumber = dataFile[2];
-
         // validating minimun lenght of Student number and printing error message
         boolean isLenghtStudentNumber = studentNumberValidation(studentNumber);
-
         // getting string to verify if two first characters are numbers.
         String firstTwoStudentNumber = studentNumber.substring(0, 1);
         boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber);
-
         // verify if position 2 and 3 are letters
         String firstTwoLettersStudentNumber = studentNumber.substring(2, 3);
         boolean isLettersStudentNumber = firstTwoLettersValidation(firstTwoLettersStudentNumber);
-
         // getting position 4 for validation
         String letterOrNumberStudentNumber = studentNumber.substring(4);
         int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
@@ -62,7 +79,10 @@ public class CA1Sba23349 {
 
     // Reading Method
     public static String[] readingMethod(String inputFile) {
-        String[] dataFile = new String[3];
+        int numLines = countLines(inputFile);
+
+        String[] dataFile = new String[numLines];
+
         try {
             Scanner sc = new Scanner(new FileReader(inputFile));
 
@@ -75,6 +95,19 @@ public class CA1Sba23349 {
             System.out.println(e);
         }
         return dataFile;
+    }
+    public static int countLines(String inputFile) {
+        int count = 0;
+        try {
+            Scanner sc = new Scanner(new FileReader(inputFile));
+            while (!sc.nextLine().isEmpty()) {
+                count ++;
+                System.out.println(count);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return count;
     }
 
     // Student Name Method
@@ -108,7 +141,6 @@ public class CA1Sba23349 {
             return "Full Time";
         }
     }
-
     // Workload validation method checking if number of classes is between 1 and 8
     public static boolean workloadValidation(int numberClasses) {
         if (numberClasses > 0 && numberClasses <= 8) {
@@ -129,7 +161,6 @@ public class CA1Sba23349 {
             return false;
         }
     }
-
     // validating if first two characters in Student Number are numbers
     public static boolean firstTwoNumberValidation(String firstTwoStudentNumber) {
         if (firstTwoStudentNumber.matches("[0-9]+")) {
@@ -139,7 +170,7 @@ public class CA1Sba23349 {
             return false;
         }
     }
-
+    // verify if position 4 is letter or number
     public static boolean studentNumberValidation(String letterOrNumberStudentNumber, String studentNumber,
             int endIndex) {
         // verify if position 4 of studentNumber String is number
@@ -155,10 +186,8 @@ public class CA1Sba23349 {
             } else {
                 return true;
             }
-
         } else {
-            // getting a String of numbers from position 5 until total lenght as position 4
-            // is a letter
+            // getting a String of numbers from position 5 until total lenght as position 4 is a letter
             String isPosition4Letter = studentNumber.substring(5, endIndex);
             // verify if last characters are numbers
             if (!isPosition4Letter.matches("[0-9]+")) {
@@ -170,7 +199,6 @@ public class CA1Sba23349 {
             }
         }
     }
-
     // verify if after student year are letters
     public static boolean firstTwoLettersValidation(String firstTwoLettersStudentNumber) {
         if (firstTwoLettersStudentNumber.matches("[0-9]+")) {
@@ -181,7 +209,7 @@ public class CA1Sba23349 {
         }
     }
 
-    //
+    // Writing Method
     public static void writingFile(String fullName, String studentNumber, int numberClasses) {
         String outputFile = "status.txt"; // name of the file to write
         // geting second name from a fullName's substring and adding 1 to skip single
@@ -198,6 +226,6 @@ public class CA1Sba23349 {
         } catch (IOException e) {
             System.out.println(e);
         }
-
     }
+
 }
