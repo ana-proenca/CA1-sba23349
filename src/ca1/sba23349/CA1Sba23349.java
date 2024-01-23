@@ -18,7 +18,7 @@ public class CA1Sba23349 {
     public static void main(String[] args) {
         // READING FROM A FILE
         // creating a variable from reading method
-        String inputFile = "student.txt"; // name of the file to read
+        String inputFile = "student.txt"; 
         String[] dataFile = new String[0];
 
         // MENU
@@ -38,46 +38,50 @@ public class CA1Sba23349 {
             System.out.println(e);
         }
 
-        // STUDENT NAME
-        // variable for the first line of the file
-        String fullName = dataFile[0];
-        boolean isStudentNameValid = studentNameValidation(fullName); // variable to verify student name
+        //Loop to send the correct line to correct array. 
+        for (int i = 0; i < dataFile.length; i += 3) {
+            // STUDENT NAME
+            // variable for the first line of the file
+            String fullName = dataFile[i];
+            boolean isStudentNameValid = studentNameValidation(fullName); // variable to verify student name
 
-        // NUMBER OF CLASSES
-        int numberClasses = Integer.parseInt(dataFile[1]); // variable to use to verify type of workload, needed to
-        // parse to int.
-        boolean isNumberClassesValid = workloadValidation(numberClasses); // variable to verify number of classes
+            // NUMBER OF CLASSES
+            // variable to use to verify type of workload, needed to parse to int.
+            int numberClasses = Integer.parseInt(dataFile[i + 1]);
+            boolean isNumberClassesValid = workloadValidation(numberClasses); // variable to verify number of classes
 
-        // STUDENT NUMBER
-        // String to verify student number
-        String studentNumber = dataFile[2];
-        // validating minimun lenght of Student number and printing error message
-        boolean isLenghtStudentNumber = studentNumberValidation(studentNumber);
-        // getting string to verify if two first characters are numbers.
-        String firstTwoStudentNumber = studentNumber.substring(0, 2);
-        int yearValidation = Integer.parseInt(firstTwoStudentNumber);
-        boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber, yearValidation);
-        // to check the year is at least 2020
+            // STUDENT NUMBER
+            // String to verify student number
+            String studentNumber = dataFile[i + 2];
+            // validating minimun lenght of Student number and printing error message
+            boolean isLenghtStudentNumber = studentNumberValidation(studentNumber);
+            // getting string to verify if two first characters are numbers.
+            String firstTwoStudentNumber = studentNumber.substring(0, 2);
+            int yearValidation = Integer.parseInt(firstTwoStudentNumber);
+            boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber, yearValidation);
+            // to check the year is at least 2020
 
-        // verify if position 2 and 3 are letters
-        String firstTwoLettersStudentNumber = studentNumber.substring(2, 4);
-        boolean isLettersStudentNumber = firstTwoLettersValidation(firstTwoLettersStudentNumber);
-        // getting position 4 for validation
-        String letterOrNumberStudentNumber = studentNumber.substring(4);
-        int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
-        // variable to check if character 2 and 3 are letters
+            // verify if position 2 and 3 are letters
+            String firstTwoLettersStudentNumber = studentNumber.substring(2, 4);
+            boolean isLettersStudentNumber = firstTwoLettersValidation(firstTwoLettersStudentNumber);
+            // getting position 4 for validation
+            String letterOrNumberStudentNumber = studentNumber.substring(4);
+            int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
+            // variable to check if character 2 and 3 are letters
 
-        // int stuNumberNumbersInt = Integer.parseInt(studentNumberNumbers);
-        boolean isStudentNumberValid = studentNumberValidation(letterOrNumberStudentNumber, studentNumber, endIndex);
+            boolean isStudentNumberValid = studentNumberValidation(letterOrNumberStudentNumber, studentNumber,
+                    endIndex);
 
-        // // WRITING IN A FILE
-        if (isStudentNameValid && isNumberClassesValid && isLenghtStudentNumber && isFirstTwoNumber
-                && isLettersStudentNumber && isStudentNumberValid) {
-            writingFile(fullName, studentNumber, numberClasses);
+            //Writing. if a block of data is correct, then it will be written into the file status.txt
+            if (isStudentNameValid && isNumberClassesValid && isLenghtStudentNumber && isFirstTwoNumber
+                    && isLettersStudentNumber && isStudentNumberValid) {
+                System.out.println("Data is written in status.txt");
+                writingFile(fullName, studentNumber, numberClasses);
+            }
         }
     }
 
-    // Reading Method
+    // Method which gets the number of lines to define the number of the array
     public static int getTotalLine(String inputFile) {
         int totalLine = 0;
 
@@ -94,7 +98,8 @@ public class CA1Sba23349 {
 
         return totalLine;
     }
-
+    
+    // Reading Method from the file
     public static String[] readFromFile(String inputFile) {
         int totalLine = getTotalLine(inputFile);
         String[] dataFile = new String[totalLine];
@@ -113,6 +118,7 @@ public class CA1Sba23349 {
         return dataFile;
     }
 
+    //Reading Method from the console
     public static String[] readFromInput(Scanner sc1) {
         String[] dataInput = new String[3];
         System.out.println("Please, enter student name: ");
@@ -205,7 +211,7 @@ public class CA1Sba23349 {
             // verify if last characters are numbers
             if (studentNumberNumbers.matches("[0-9]+")) {
                 int studentNumberInt = Integer.parseInt(studentNumberNumbers);
-                
+
                 if (studentNumberInt >= 1 && studentNumberInt <= 200) {
                     return true;
                 } else {
@@ -223,7 +229,7 @@ public class CA1Sba23349 {
             // verify if last characters are numbers
             if (studentNumberNumbers.matches("[0-9]+")) {
                 int studentNumberInt = Integer.parseInt(studentNumberNumbers);
-                
+
                 if (studentNumberInt >= 1 && studentNumberInt <= 200) {
                     return true;
                 } else {
@@ -249,18 +255,18 @@ public class CA1Sba23349 {
     // Writing Method
     public static void writingFile(String fullName, String studentNumber, int numberClasses) {
         String outputFile = "status.txt"; // name of the file to write
-        // geting second name from a fullName's substring and adding 1 to skip single
-        // space
+        // geting second name from a fullName's substring and adding 1 to skip single space
         String secondName = fullName.substring(fullName.indexOf(" ") + 1);
         // variable to get method Workload
         String resultWorkload = workload(numberClasses);
         try {
-            BufferedWriter br = new BufferedWriter(new FileWriter(outputFile));
+            BufferedWriter br = new BufferedWriter(new FileWriter(outputFile, true));
             br.write(studentNumber.toUpperCase() + "-" + secondName);
             br.newLine();
             br.write(resultWorkload);
-            System.out.println("Data is written in status.txt");
+            br.newLine();
             br.close();
+
         } catch (IOException e) {
             System.out.println(e);
         }
