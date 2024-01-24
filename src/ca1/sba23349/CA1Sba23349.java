@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * GitHub : https://github.com/ana-proenca/CA1-sba23349
+// * GitHub : https://github.com/ana-proenca/CA1-sba23349
  */
 public class CA1Sba23349 {
 
     public static void main(String[] args) {
         // READING FROM A FILE
         // creating a variable from reading method
-        String inputFile = "student.txt"; 
+        String inputFile = "students.txt"; 
         String[] dataFile = new String[0];
 
         // MENU
@@ -233,7 +233,7 @@ public class CA1Sba23349 {
                 if (studentNumberInt >= 1 && studentNumberInt <= 200) {
                     return true;
                 } else {
-                    System.out.println("Number after the letters need to be between 1 and 200");
+                    System.out.println("Number after the letters in student number need to be between 1 and 200.");
                     return false;
                 }
             } else {
