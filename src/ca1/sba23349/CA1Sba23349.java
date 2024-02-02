@@ -8,18 +8,19 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * GitHub : https://github.com/ana-proenca/CA1-sba23349
+// * GitHub : https://github.com/ana-proenca/CA1-sba23349
  */
 public class CA1Sba23349 {
 
     public static void main(String[] args) {
-        // READING FROM A FILE
-        // creating a variable from reading method
-        String inputFile = "student.txt"; 
-        String[] dataFile = new String[0];
+    
+        // READING FROM A FILE 
+        String inputFile = "students.txt"; 
+        ArrayList<String> dataFile = new ArrayList<String>();
 
         // MENU
         System.out.println("Please enter an option: ");
@@ -38,28 +39,22 @@ public class CA1Sba23349 {
             System.out.println(e);
         }
 
-        //Loop to send the correct line to correct array. 
-        for (int i = 0; i < dataFile.length; i += 3) {
+        //Loop to send the correct line to correct ArrayList 
+        for (int i = 0; i < dataFile.size(); i += 3) {
             // STUDENT NAME
-            // variable for the first line of the file
-            String fullName = dataFile[i];
-            boolean isStudentNameValid = studentNameValidation(fullName); // variable to verify student name
+            String fullName = dataFile.get(i);
+            boolean isStudentNameValid = studentNameValidation(fullName); 
 
             // NUMBER OF CLASSES
-            // variable to use to verify type of workload, needed to parse to int.
-            int numberClasses = Integer.parseInt(dataFile[i + 1]);
-            boolean isNumberClassesValid = workloadValidation(numberClasses); // variable to verify number of classes
+            int numberClasses = Integer.parseInt(dataFile.get(i + 1));
+            boolean isNumberClassesValid = workloadValidation(numberClasses); 
 
             // STUDENT NUMBER
-            // String to verify student number
-            String studentNumber = dataFile[i + 2];
-            // validating minimun lenght of Student number and printing error message
-            boolean isLenghtStudentNumber = studentNumberValidation(studentNumber);
-            // getting string to verify if two first characters are numbers.
-            String firstTwoStudentNumber = studentNumber.substring(0, 2);
+            String studentNumber = dataFile.get(i + 2);
+            boolean isLenghtStudentNumber = studentNumberValidation(studentNumber); // validating minimun lenght of Student number 
+            String firstTwoStudentNumber = studentNumber.substring(0, 2); // verify if two first characters are numbers.
             int yearValidation = Integer.parseInt(firstTwoStudentNumber);
-            boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber, yearValidation);
-            // to check the year is at least 2020
+            boolean isFirstTwoNumber = firstTwoNumberValidation(firstTwoStudentNumber, yearValidation); // year is at least 2020
 
             // verify if position 2 and 3 are letters
             String firstTwoLettersStudentNumber = studentNumber.substring(2, 4);
@@ -67,8 +62,6 @@ public class CA1Sba23349 {
             // getting position 4 for validation
             String letterOrNumberStudentNumber = studentNumber.substring(4);
             int endIndex = studentNumber.length(); // getting the total lenght of the String studentNumber
-            // variable to check if character 2 and 3 are letters
-
             boolean isStudentNumberValid = studentNumberValidation(letterOrNumberStudentNumber, studentNumber,
                     endIndex);
 
@@ -76,41 +69,22 @@ public class CA1Sba23349 {
             if (isStudentNameValid && isNumberClassesValid && isLenghtStudentNumber && isFirstTwoNumber
                     && isLettersStudentNumber && isStudentNumberValid) {
                 System.out.println("Data is written in status.txt");
+                System.out.println("\n");
                 writingFile(fullName, studentNumber, numberClasses);
             }
         }
     }
-
-    // Method which gets the number of lines to define the number of the array
-    public static int getTotalLine(String inputFile) {
-        int totalLine = 0;
-
-        try {
-            Scanner sc = new Scanner(new FileReader(inputFile));
-
-            while (sc.hasNextLine()) {
-                sc.nextLine();
-                totalLine++;
-            }
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        return totalLine;
-    }
     
     // Reading Method from the file
-    public static String[] readFromFile(String inputFile) {
-        int totalLine = getTotalLine(inputFile);
-        String[] dataFile = new String[totalLine];
+    public static ArrayList<String> readFromFile(String inputFile) {
+        ArrayList<String> dataFile = new ArrayList<String>();
 
         try {
             Scanner sc = new Scanner(new FileReader(inputFile));
 
-            int index = 0;
             while (sc.hasNextLine()) {
-                dataFile[index] = sc.nextLine();
-                index++;
+                String line = sc.nextLine();
+                dataFile.add(line);
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -119,16 +93,16 @@ public class CA1Sba23349 {
     }
 
     //Reading Method from the console
-    public static String[] readFromInput(Scanner sc1) {
-        String[] dataInput = new String[3];
-        System.out.println("Please, enter student name: ");
-        dataInput[0] = sc1.nextLine();
+    public static ArrayList<String> readFromInput(Scanner sc1) {
+        ArrayList<String> dataInput = new ArrayList<String>();
+        System.out.println("Please, enter name and surname of the student: ");
+        dataInput.add(sc1.nextLine());
 
         System.out.println("Enter the number of classes between 1 and 8:");
-        dataInput[1] = sc1.nextLine();
+        dataInput.add(sc1.nextLine());
 
         System.out.println("Enter the student number: ");
-        dataInput[2] = sc1.nextLine();
+        dataInput.add(sc1.nextLine());
 
         return dataInput;
     }
@@ -170,7 +144,7 @@ public class CA1Sba23349 {
         if (numberClasses > 0 && numberClasses <= 8) {
             return true;
         } else {
-            System.out.println("Enter a valid number of classes: between 1 and 8");
+            System.out.println("Number of classes must be between 1 and 8");
             return false;
         }
     }
@@ -233,7 +207,7 @@ public class CA1Sba23349 {
                 if (studentNumberInt >= 1 && studentNumberInt <= 200) {
                     return true;
                 } else {
-                    System.out.println("Number after the letters need to be between 1 and 200");
+                    System.out.println("Number after the letters in student number need to be between 1 and 200.");
                     return false;
                 }
             } else {
@@ -254,10 +228,9 @@ public class CA1Sba23349 {
 
     // Writing Method
     public static void writingFile(String fullName, String studentNumber, int numberClasses) {
-        String outputFile = "status.txt"; // name of the file to write
+        String outputFile = "status.txt"; 
         // geting second name from a fullName's substring and adding 1 to skip single space
         String secondName = fullName.substring(fullName.indexOf(" ") + 1);
-        // variable to get method Workload
         String resultWorkload = workload(numberClasses);
         try {
             BufferedWriter br = new BufferedWriter(new FileWriter(outputFile, true));
