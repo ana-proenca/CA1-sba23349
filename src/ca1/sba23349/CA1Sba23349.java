@@ -39,10 +39,7 @@ public class CA1Sba23349 {
             System.out.println(e);
         }
 
-        //Loop to send the correct line to correct array. 
-        // i = Student name
-        // i + 1 = Name of classes
-        // i + 2 = Student Number
+        //Loop to send the correct line to correct ArrayList 
         for (int i = 0; i < dataFile.size(); i += 3) {
             // STUDENT NAME
             String fullName = dataFile.get(i);
